@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 
 import '../components/customBlueButton.dart';
 import '../components/otpForm.dart';
+import '../components/textfield/pin.dart';
+import '../providers/functions/auth.dart';
 import 'create_account.dart';
 
 class VerifyNumber extends StatefulWidget {
-  const VerifyNumber({Key? key}) : super(key: key);
+  final String countryCode;
+  final String phoneNumber;
+  const VerifyNumber(
+      {Key? key, required this.countryCode, required this.phoneNumber})
+      : super(key: key);
 
   @override
   State<VerifyNumber> createState() => _VerifyNumberState();
@@ -26,87 +32,110 @@ class _VerifyNumberState extends State<VerifyNumber> {
           },
         ),
       ),
-      body: Column( crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(padding: EdgeInsets.fromLTRB(15, 10, 10, 0),
-            child: Text("Verify Number",
+          const Padding(
+            padding: EdgeInsets.fromLTRB(15, 10, 10, 0),
+            child: Text(
+              "Verify Number",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
-                  color: Color.fromRGBO(1, 31, 120, 1)
-              ),
+                  color: Color.fromRGBO(1, 31, 120, 1)),
             ),
           ),
           Column(
             children: [
-              Padding(padding: EdgeInsets.fromLTRB(15, 5, 10, 25),
-                child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 5, 10, 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('We sent a verification code to '),
-                    Row(
-                        children: [Text('+23482473488484', style: TextStyle(
+                    const Text('We sent a verification code to '),
+                    Row(children: [
+                      Text(
+                        '${widget.countryCode}${widget.phoneNumber}',
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(1, 31, 120, 1)
-                        ),
-                        ),
-                          Text(' Please input the code')
-                        ])
+                            color: Color.fromRGBO(1, 31, 120, 1)),
+                      ),
+                      const Text(' Please input the code')
+                    ])
                   ],
                 ),
               )
             ],
           ),
-          Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OTPForm(),
-              OTPForm(),
-              OTPForm(),
-              OTPForm(),
-              OTPForm(),
-              OTPForm(),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: PINField(
+              length: 6,
+              onCompleted: (p0) async {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const SetupPin()));
+                // setState(() {
+                //   _loading = true;
+                // });
+                // await AuthFunctions().verifyPhoneNumber(
+                //   context: context,
+                //   countryCode: widget.countryCode,
+                //   phoneNumber: widget.phoneNumber,
+                //   code: p0,
+                // );
+                // if (mounted) {
+                //   setState(() {
+                //     _loading = false;
+                //   });
+                // }
+              },
+            ),
           ),
-          SizedBox(height: 30,),
-          Row( mainAxisAlignment: MainAxisAlignment.center,
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (start == 0) ...{
                 RichText(
-                  text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Code expired! ",
-                        ),
-                        TextSpan(
-                            text: "Resed Code",
-                            style: TextStyle(color: Color.fromRGBO(1, 31, 120, 1))
-                        )
-                      ]
-                  ),
+                  text: const TextSpan(children: [
+                    TextSpan(
+                      text: "Code expired! ",
+                    ),
+                    TextSpan(
+                        text: "Resed Code",
+                        style: TextStyle(color: Color.fromRGBO(1, 31, 120, 1)))
+                  ]),
                 )
               } else ...{
                 RichText(
-                  text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: "This code will expire in ",
-                            style: TextStyle(color: Colors.grey)
-                        ),
-                        TextSpan(
-                            text: "00:$start",
-                            style: TextStyle(color: Color.fromRGBO(1, 31, 120, 1))
-                        )
-                      ]
-                  ),
+                  text: TextSpan(children: [
+                    const TextSpan(
+                        text: "This code will expire in ",
+                        style: TextStyle(color: Colors.grey)),
+                    TextSpan(
+                        text: "00:$start",
+                        style: const TextStyle(
+                            color: Color.fromRGBO(1, 31, 120, 1)))
+                  ]),
                 )
               }
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 10, 40),
-            child: CustomBlueButton(text: 'Next', onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SetupPin()));
-            }),
+            child: CustomBlueButton(
+                text: 'Next',
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SetupPin()));
+                }),
           )
         ],
       ),
@@ -125,9 +154,6 @@ class _VerifyNumberState extends State<VerifyNumber> {
           start--;
         });
       }
-    }
-    );
+    });
   }
-
 }
-

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../profile/confirm_pin.dart';
+
 class NumberPadScreen extends StatefulWidget {
-  const NumberPadScreen({Key? key}) : super(key: key);
+  final Function(String) onCompleted;
+  const NumberPadScreen({
+    Key? key,
+    required this.onCompleted,
+  }) : super(key: key);
 
   @override
   State<NumberPadScreen> createState() => _NumberPadScreenState();
@@ -158,11 +164,11 @@ class _NumberPadScreenState extends State<NumberPadScreen> {
       pinIndex = 0;
     else if (pinIndex == 4) {
       setPin(pinIndex, "");
-      currentPin[pinIndex-1] = "";
+      currentPin[pinIndex - 1] = "";
       pinIndex--;
     } else {
       setPin(pinIndex, "");
-      currentPin[pinIndex-1] = "";
+      currentPin[pinIndex - 1] = "";
       pinIndex--;
     }
   }
@@ -179,7 +185,10 @@ class _NumberPadScreenState extends State<NumberPadScreen> {
     currentPin.forEach((e) {
       strPin += e;
     });
-    if (pinIndex == 4) print(strPin);
+    if (pinIndex == 4) {
+      print(strPin);
+      widget.onCompleted(strPin);
+    }
   }
 
   setPin(int n, String text) {
@@ -229,11 +238,11 @@ class PINNumber extends StatelessWidget {
         obscureText: false,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(16.0),
-          border: outlineInputBorder,
-          filled: true
-        ),
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21, color: Colors.black),
+            contentPadding: EdgeInsets.all(16.0),
+            border: outlineInputBorder,
+            filled: true),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 21, color: Colors.black),
       ),
     );
   }

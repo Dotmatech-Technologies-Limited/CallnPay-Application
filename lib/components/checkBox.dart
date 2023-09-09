@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
+class CheckBox extends StatelessWidget {
+  final bool isSelected;
+  final Function() onTap;
+  const CheckBox({
+    super.key,
+    required this.isSelected,
+    required this.onTap,
+  });
 
-class CheckBox extends StatefulWidget {
-
-
-  @override
-  State<CheckBox> createState() => _CheckBoxState();
-}
-
-class _CheckBoxState extends State<CheckBox> {
-  bool _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,37 +16,48 @@ class _CheckBoxState extends State<CheckBox> {
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 2,0, 0),
+              padding: const EdgeInsets.fromLTRB(15, 2, 0, 0),
               child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                      _isSelected = !_isSelected;
-                  });
-                },
+                onTap: onTap,
                 child: Container(
                   width: 20,
                   height: 20,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: Colors.black45)),
-                child: _isSelected ? Icon(Icons.check, size: 17, color: Colors.green,) : null,
+                  child: isSelected
+                      ? const Icon(
+                          Icons.check,
+                          size: 17,
+                          color: Colors.green,
+                        )
+                      : null,
                 ),
               ),
             ),
-            Text('  I agree to abide by the '),
-            GestureDetector(
-              onTap: () {},
-              child:  Text('terms ', style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(1, 31, 120, 1)
-              ),),
+            const Text(
+              '  I agree to abide by the ',
             ),
-           Text("and "),
             GestureDetector(
               onTap: () {},
-              child:  Text('conditions', style: TextStyle(
+              child: const Text(
+                'terms ',
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(1, 31, 120, 1)
-              ),),
+                  color: Color.fromRGBO(1, 31, 120, 1),
+                ),
+              ),
+            ),
+            const Text("and "),
+            GestureDetector(
+              onTap: () {},
+              child: const Text(
+                'conditions',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(1, 31, 120, 1),
+                ),
+              ),
             )
           ],
         )
